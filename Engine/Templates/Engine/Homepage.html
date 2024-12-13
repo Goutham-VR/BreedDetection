@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Homepage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(120deg, #fdfbfb, #ebedee);
+            color: #333;
+            /* overflow: hidden; Remove right scrollbar */
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+        header .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #ff5722;
+        }
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header nav ul li {
+            margin: 0 15px;
+        }
+        header nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1em;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        header nav ul li a:hover {
+            color: #ff5722;
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: url('https://source.unsplash.com/1600x900/?nature,technology');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .hero-section h1 {
+            font-size: 3em;
+            margin: 0;
+            z-index: 1;
+        }
+        .hero-section p {
+            font-size: 1.2em;
+            margin: 15px 0 30px;
+            z-index: 1;
+        }
+        .hero-section .cta {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1em;
+            font-weight: 700;
+            color: white;
+            background-color: #ff5722;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            z-index: 1;
+        }
+        .hero-section .cta:hover {
+            background-color: #e64a19;
+        }
+
+        .features-section {
+            padding: 50px 10%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #f9f9f9;
+        }
+        .features-section .feature {
+            width: calc(33% - 20px);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .features-section .feature h3 {
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+        .features-section .feature p {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 10%;
+            text-align: center;
+        }
+        footer a {
+            color: #ff5722;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .features-section .feature {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">MyBrand</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero-section">
+        <h1>Welcome to MyBrand</h1>
+        <p>Discover innovation and creativity at your fingertips.</p>
+        <a href="{% url 'Engine:detect' %}" class="cta">Get Started</a>
+    </div>
+
+    <section class="features-section">
+        <div class="feature">
+            <h3>Feature One</h3>
+            <p>Experience unmatched performance and design.</p>
+        </div>
+        <div class="feature">
+            <h3>Feature Two</h3>
+            <p>Seamless integration with modern tools.</p>
+        </div>
+        <div class="feature">
+            <h3>Feature Three</h3>
+            <p>Built for speed, efficiency, and reliability.</p>
+        </div>
+    </section>
+    <section class="features-section">
+        <div class="feature">
+            <h3>Upload an Image</h3>
+            <p>Select an image to preview it before processing:</p>
+            <input type="file" id="imageInput" accept="image/*">
+            <br><br>
+            <img id="imagePreview" src="#" alt="Preview" style="display: none; max-width: 100%; height: auto; border: 1px solid #ccc; padding: 10px;">
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2024 MyBrand. All rights reserved. <a href="#">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>
+<script>
+    // JavaScript to preview image
+    document.getElementById('imageInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block'; // Show the image
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
